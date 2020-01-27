@@ -19,10 +19,26 @@
     "redux": "^4.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "run-p start:* ",
+    "start-silent": "run-p start > /dev/null",
+    "start:react": "react-scripts start",
+    "start-and-test": "run-p start-silent test ",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --noStackTrace",
+    "test-all": "react-scripts test --watchAll=false --noStackTrace",
+    "test-related": "react-scripts test --watchAll=false --noStackTrace --findRelatedTests",
     "eject": "react-scripts eject"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "yarn test-related --",
+      "eslint"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
