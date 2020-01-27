@@ -1,23 +1,38 @@
 import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
-function App() {
+import { StylesProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
+
+import store from './redux/store';
+
+import { MainLayout } from './components/layout/MainLayout/MainLayout';
+import { Homepage } from './components/views/Homepage/Homepage';
+import { Post } from './components/views/Post/Post';
+import { PostEdit } from './components/views/PostEdit/PostEdit';
+import { PostAdd } from './components/views/PostAdd/PostAdd';
+import { NotFound } from './components/views/NotFound/NotFound';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Hello
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <BrowserRouter>
+        <StylesProvider injectFirst>
+          <CssBaseline />
+          <MainLayout>
+            <Switch>
+              <Route exact path='/' component={Homepage} />
+              <Route exact path='/post/add' component={PostAdd} />
+              <Route exact path='/post/:id' component={Post} />
+              <Route exact path='/post/:id/edit' component={PostEdit} />
+              <Route path='*' component={NotFound} />
+            </Switch>
+          </MainLayout>
+        </StylesProvider>
+      </BrowserRouter>
+    </Provider>
   );
-}
+};
 
 export default App;
