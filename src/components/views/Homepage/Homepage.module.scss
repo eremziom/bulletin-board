@@ -3,3 +3,22 @@
 // .root {
 
 // }
+
+.welcome {
+  font-weight: 300;
+  font-family: 'Source Code Pro', monospace;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  .card {
+    width: 300px;
+    margin: 0 20px;
+  }
+}
+
+.photo {
+  height: 150px;
+}

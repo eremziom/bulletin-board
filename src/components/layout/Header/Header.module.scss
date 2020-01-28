@@ -3,3 +3,69 @@
 // .root {
 
 // }
+
+.logged {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.Btn {
+  display: block;
+  width: 250px;
+  position: relative;
+  margin: 0.2em auto;
+  text-align: center;
+  line-height: 34px;
+  border-radius: 0.2em;
+  font-size: 16px;
+  color: #FFF;
+  text-decoration: none;
+  cursor: pointer;
+  background: rgb(78, 77, 77);
+}
+
+.Btn:hover {
+  background:steelblue;
+  transition: 0.5s;
+}
+
+.Btn:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 100%;
+}
+
+.Btngoogle:before {
+  border-right: #BB3F30 1px solid;
+  background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+  background-position: center;
+}
+
+.BtnBulletin:before {
+  border-right: #BB3F30 1px solid;
+  background: url('https://image.flaticon.com/icons/svg/93/93350.svg') no-repeat;
+  background-position: center;
+  background-size: 30px 30px;
+}
+
+.BtnLogout:before {
+  border-right: #BB3F30 1px solid;
+  background: url('https://image.flaticon.com/icons/svg/1286/1286969.svg') no-repeat;
+  background-position: center;
+  background-size: 30px 30px;
+}
+
+@media only screen and (max-width: 767px) {
+  .logged {
+    display: block;
+    .welcome {
+      display: none;
+    }
+  }
+}
+

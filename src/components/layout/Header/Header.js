@@ -4,17 +4,49 @@ import clsx from 'clsx';
 
 import styles from './Header.module.scss';
 
+import Button from '@material-ui/core/Button';
+
 //import {connect} from 'react-redux';
 //import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+let logged = false;
 
-const Component = ({className, children}) => {
-  return (
-    <div className={clsx(className, styles.root)}>
-      <h2>Header</h2>
-      {children}
-    </div>
-  );
-};
+class Component extends React.Component {
+
+  loggout() {
+    console.log('clicked, and logged out');
+  }
+
+  checkStatus() {
+    if(!logged){
+      return (
+        <a className={clsx(styles.Btn, styles.Btngoogle)} href="/auth/google">
+        Login with Google
+        </a>
+      );
+    }
+    else {
+      return (
+        <div className={styles.logged}>
+          <Button variant="contained" className={clsx(styles.Btn, styles.BtnBulletin)} href="/post/myPosts">
+            My Bulletins
+          </Button>
+          <p className={styles.welcome}>Welcome USER</p>
+          <Button variant="contained" className={clsx(styles.Btn, styles.BtnLogout)} onClick={this.loggout}>
+            LogOut
+          </Button>
+        </div>
+      );
+    }
+  }
+
+  render(){
+    return (
+      <div className={clsx(styles.login, styles.root)}>
+        {this.checkStatus()}
+      </div>
+    );
+  }
+}
 
 Component.propTypes = {
   children: PropTypes.node,

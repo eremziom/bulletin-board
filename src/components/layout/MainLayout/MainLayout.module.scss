@@ -1,5 +1,28 @@
 @import '../../../styles/settings.scss';
 
-// .root {
+.root {
+  text-align: center;
+}
 
-// }
+.main {
+   color: white;
+}
+
+body {
+   background-color: black;
+}
+
+.albatroz {
+  font-family: 'Syncopate', sans-serif;
+  font-size: 40px;
+  background-color: lightsteelblue;
+  position: relative;
+  background: linear-gradient(to right, black, lightsteelblue, black);
+}
+
+.bird {
+  position: absolute;
+  top: 8px;
+  margin: 0 20px;
+  width: 40px;
+}
