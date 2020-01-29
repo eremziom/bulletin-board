@@ -2,22 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
-import styles from './MainLayout.module.scss';
-import { Header } from '../Header/Header';
-
-import Container from '@material-ui/core/Container';
+import styles from './MyPosts.module.scss';
 
 //import {connect} from 'react-redux';
 //import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
 
-const Component = ({children}) => {
+const Component = ({className, children}) => {
   return (
-    <div className={clsx(styles.main, styles.root)}>
-      <h2 className={styles.albatroz}>ALBATROZ</h2>
-      <Container maxWidth="lg">
-        <Header />
-        {children}
-      </Container>
+    <div className={clsx(className, styles.root)}>
+      <h2>MyPosts</h2>
+      {children}
     </div>
   );
 };
@@ -38,7 +32,7 @@ Component.propTypes = {
 // const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as MainLayout,
-  //Container as MainLayout,
-  Component as MainLayoutComponent,
+  Component as MyPosts,
+  //Container as MyPosts,
+  Component as MyPostsComponent,
 };

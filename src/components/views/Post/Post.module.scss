@@ -1,5 +1,36 @@
 @import '../../../styles/settings.scss';
 
-// .root {
+.root {
+  font-family: $mainFont;
+}
 
-// }
+.photo {
+  height: 400px;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  padding: 20px 20px;
+}
+
+.hide {
+  display: none;
+}
+
+.contact {
+  padding: 20px 0;
+}
+
+.background {
+  background:linear-gradient(to right, white, lightsteelblue, white);
+}
+
+@media only screen and (max-width: 767px) {
+  .details {
+    display: block;
+  }
+}

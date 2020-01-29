@@ -6,7 +6,7 @@
 
 .welcome {
   font-weight: 300;
-  font-family: 'Source Code Pro', monospace;
+  font-family: $mainFont;
 }
 
 .cards {
@@ -16,7 +16,14 @@
   .card {
     width: 300px;
     margin: 0 20px;
+    font-family: $mainFont;
   }
+}
+
+.cardAction:hover {
+  background:steelblue;
+  color: white;
+  transition: 0.5s;
 }
 
 .photo {

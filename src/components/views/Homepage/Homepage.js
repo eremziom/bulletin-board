@@ -6,10 +6,8 @@ import db from '../../../db.js';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 import styles from './Homepage.module.scss';
@@ -25,29 +23,21 @@ const Component = ({className, children}) => {
       <div className={styles.cards}>
         {db.notes.map((note) =>
           <Card key={note.id} className={styles.card}>
-            <CardActionArea>
+            <CardActionArea href={`/post/${note.id}`} className={styles.cardAction}>
               <CardMedia
                 className={styles.photo}
                 image={note.photo}
-                title="Contemplative Reptile"
+                title={note.title}
               />
               <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography gutterBottom variant="inherit" component="h2">
                   {note.title}
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
+                <Typography variant="inherit" component="p">
                   {note.content}
                 </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
-              {/* <Button size="small" color="primary">
-                Share
-              </Button> */}
-              <Button size="small" color="primary">
-                Go to card
-              </Button>
-            </CardActions>
           </Card>
         )}
       </div>

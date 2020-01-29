@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 //import {connect} from 'react-redux';
 //import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
-let logged = false;
+let logged = true;
 
 class Component extends React.Component {
 
@@ -19,7 +19,7 @@ class Component extends React.Component {
   checkStatus() {
     if(!logged){
       return (
-        <a className={clsx(styles.Btn, styles.Btngoogle)} href="/auth/google">
+        <a className={clsx(styles.Btn, styles.Btngoogle)} href="https://google.com">
         Login with Google
         </a>
       );
@@ -27,7 +27,7 @@ class Component extends React.Component {
     else {
       return (
         <div className={styles.logged}>
-          <Button variant="contained" className={clsx(styles.Btn, styles.BtnBulletin)} href="/post/myPosts">
+          <Button variant="contained" className={clsx(styles.Btn, styles.BtnBulletin)} href="/myPosts">
             My Bulletins
           </Button>
           <p className={styles.welcome}>Welcome USER</p>
