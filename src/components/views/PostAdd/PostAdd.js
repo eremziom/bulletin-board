@@ -6,11 +6,29 @@ import db from '../../../db.js';
 import styles from './PostAdd.module.scss';
 
 import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 
 //import {connect} from 'react-redux';
 //import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
 
 class Component extends React.Component {
+  constructor( props ){
+    super( props );
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  state = {
+    status: '',
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      ...this.state,
+      [name]: event.target.value,
+    });
+  };
 
   giveDate() {
     const newDate = new Date();
@@ -52,6 +70,13 @@ class Component extends React.Component {
             />
             <TextField
               className={styles.inputs}
+              id="photo-input"
+              label="Photo address"
+              type="text"
+              variant="filled"
+            />
+            <TextField
+              className={styles.inputs}
               id="local-input"
               label="Localisation"
               type="text"
@@ -72,6 +97,21 @@ class Component extends React.Component {
               type="text"
               variant="filled"
             />
+            <InputLabel className={clsx(styles.inputs, styles.short)} htmlFor="status-switch">Status</InputLabel>
+            <Select
+              className={clsx(styles.inputs, styles.short)}
+              native
+              value={this.state.status}
+              onChange={this.handleChange('status')}
+              inputProps={{
+                name: 'status',
+                id: 'status-switch',
+              }}
+            >
+              <option value={10}>Draft</option>
+              <option value={20}>Published</option>
+              <option value={30}>Closed</option>
+            </Select>
             <TextField disabled
               className={styles.inputs}
               id="pubDate-input"
@@ -80,6 +120,17 @@ class Component extends React.Component {
               variant="filled"
               defaultValue={this.giveDate()}
             />
+            <TextField disabled
+              className={styles.inputs}
+              id="author-input"
+              label="Author"
+              type="text"
+              variant="filled"
+              defaultValue="Currently logged"
+            />
+            <Button variant="contained" className={styles.Btn} type="submit">
+              SUBMIT
+            </Button>
           </div>
         </form>
       </div>

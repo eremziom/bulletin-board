@@ -13,4 +13,60 @@
   width: 100%;
   margin: 5px 0;
   border-radius: 5px;
+  label {
+    color: steelblue;
+  }
+  input {
+    color: darkslategrey;
+  }
+  div:after {
+    border-bottom: 3px solid steelblue;
+    transition: transform 500ms cubic-bezier(0.22, 0.61, 0.36, 1) 0ms;
+  }
+  textarea {
+    color: darkslategrey;
+  }
+  .opt {
+    background-color: red;;
+  }
+}
+
+.short {
+  max-width: 200px;
+  display: flex;
+  flex-direction: row;
+  padding: 0 10px;
+  div:after {
+    border-bottom: 3px solid steelblue;
+    transition: transform 500ms cubic-bezier(0.22, 0.61, 0.36, 1) 0ms;
+  }
+}
+
+.Btn {
+  display: block;
+  width: 250px;
+  position: relative;
+  margin: 0.2em auto;
+  text-align: center;
+  line-height: 34px;
+  border-radius: 0.2em;
+  font-size: 16px;
+  color: #FFF;
+  text-decoration: none;
+  cursor: pointer;
+  background: rgb(78, 77, 77);
+}
+
+.Btn:hover {
+  background:steelblue;
+  transition: 0.5s;
+}
+
+.Btn:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46px;
+  height: 100%;
 }

@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
+import db from '../../../db.js';
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+
 import styles from './MyPosts.module.scss';
 
 //import {connect} from 'react-redux';
@@ -10,8 +17,27 @@ import styles from './MyPosts.module.scss';
 const Component = ({className, children}) => {
   return (
     <div className={clsx(className, styles.root)}>
-      <h2>MyPosts</h2>
-      {children}
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            <h2>Your Notes</h2>
+          </ListSubheader>
+        }
+      >
+        {db.notes.map((note) =>
+          (note.author === 'Jan' ?
+            <ListItem button >
+              <div className={styles.list}>
+                <div>Publish date: {note.pubDate}</div>
+                <div>Actual eddition date: {note.actDate}</div>
+                <div><ListItemText primary={note.title} /></div>
+                <div>Status: {note.status}</div>
+              </div>
+            </ListItem> : '')
+        )}
+      </List>
     </div>
   );
 };

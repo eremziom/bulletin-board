@@ -12,6 +12,7 @@ const db = {
       price: '300$',
       phone: '987 654 321',
       local: 'Warsaw',
+      author: 'Jan',
     },
     {
       id: 2,
@@ -25,6 +26,7 @@ const db = {
       price: '170$',
       phone: '123 456 789',
       local: 'Krakow',
+      author: 'Anna',
     },
   ],
 };
