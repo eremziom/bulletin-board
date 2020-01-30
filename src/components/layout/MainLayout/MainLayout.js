@@ -13,7 +13,7 @@ import Container from '@material-ui/core/Container';
 const Component = ({children}) => {
   return (
     <div className={clsx(styles.main, styles.root)}>
-      <h2 className={styles.albatroz}>ALBATROZ</h2>
+      <h2 className={styles.albatroz}><a href="/">ALBATROZ</a></h2>
       <Container maxWidth="lg">
         <Header />
         {children}

@@ -5,11 +5,12 @@
 // }
 
 .form {
-  background:linear-gradient(to right, lightsteelblue, white, lightsteelblue);
-
 }
 
 .inputs {
+  background:linear-gradient(to right, lightsteelblue, white, lightsteelblue);
   font-family: $mainFont;
   width: 100%;
+  margin: 5px 0;
+  border-radius: 5px;
 }

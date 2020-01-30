@@ -15,8 +15,15 @@
   flex-wrap: wrap;
   .card {
     width: 300px;
-    margin: 0 20px;
+    margin: 0 20px 40px;
     font-family: $mainFont;
+    .cardAction {
+      height: 100%;
+    }
+    .plus {
+      font-size: 50px;
+      font-weight: bold;
+    }
   }
 }
 

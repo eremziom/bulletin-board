@@ -43,21 +43,38 @@ class Component extends React.Component {
             />
             <TextField required
               className={styles.inputs}
-              id="title-input"
+              id="content-input"
               label="Content"
+              multiline
+              rows="4"
+              type="text"
+              variant="filled"
+            />
+            <TextField
+              className={styles.inputs}
+              id="local-input"
+              label="Localisation"
               type="text"
               variant="filled"
             />
             <TextField required
               className={styles.inputs}
-              id="title-input"
-              label="email"
+              id="email-input"
+              label="Email"
+              type="text"
+              variant="filled"
+            />
+            <TextField
+              className={styles.inputs}
+              id="phone-input"
+              label="Phone number"
+              defaultValue="+48 "
               type="text"
               variant="filled"
             />
             <TextField disabled
               className={styles.inputs}
-              id="title-input"
+              id="pubDate-input"
               label="Publish Date"
               type="text"
               variant="filled"
