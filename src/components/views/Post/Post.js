@@ -18,16 +18,24 @@ import Typography from '@material-ui/core/Typography';
 class Component extends React.Component {
 
   getId() {
-    const locArr = window.location.pathname.split('/');
-    const postId = locArr[2];
+    let postId = '';
+    if(!this.props.match){
+      return 2;
+    } else
+      postId = this.props.match.params.id;
     return postId;
   }
-
   getPost(postId) {
+    let showPost = '';
     for(let post of db.notes){
-      if(post.id == postId){
-        return post;
+      if(post.id === Number(postId)){
+        showPost = post;
       }
+    }
+    if (!showPost) {
+      window.location.replace('/NotFound');
+    } else{
+      return showPost;
     }
   }
 
@@ -87,6 +95,7 @@ class Component extends React.Component {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  match: PropTypes.object,
 };
 
 // const mapStateToProps = state => ({
