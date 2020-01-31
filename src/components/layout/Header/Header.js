@@ -5,12 +5,16 @@ import clsx from 'clsx';
 import styles from './Header.module.scss';
 
 import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {loginSwitch} from '../../../redux/loginRedux.js';
 let logged = true;
 
 class Component extends React.Component {
+  constructor( props ){
+    super( props );
+  }
 
   loggout() {
     console.log('clicked, and logged out');
@@ -40,8 +44,13 @@ class Component extends React.Component {
   }
 
   render(){
+    const {loginSwitch} = this.props;
     return (
       <div className={clsx(styles.login, styles.root)}>
+        <Switch
+          onChange={loginSwitch}
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
         {this.checkStatus()}
       </div>
     );
@@ -51,20 +60,21 @@ class Component extends React.Component {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  loginSwitch: PropTypes.func,
 };
 
 // const mapStateToProps = state => ({
 //   someProp: reduxSelector(state),
 // });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg),)
-// });
+const mapDispatchToProps = dispatch => ({
+  loginSwitch: () => dispatch(loginSwitch()),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(null, mapDispatchToProps)(Component);
 
 export {
   Component as Header,
-  //Container as Header,
+  Container as HeaderContainer,
   Component as HeaderComponent,
 };

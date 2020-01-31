@@ -8,5 +8,8 @@ export const initialState = {
       error: false,
     },
   },
-  log: {},
+  login: {
+    logged: false,
+    user: '',
+  },
 };

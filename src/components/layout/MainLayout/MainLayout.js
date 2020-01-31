@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 import styles from './MainLayout.module.scss';
-import { Header } from '../Header/Header';
+import { HeaderContainer } from '../Header/Header';
 
 import Container from '@material-ui/core/Container';
 
@@ -15,7 +15,7 @@ const Component = ({children}) => {
     <div className={clsx(styles.main, styles.root)}>
       <h2 className={styles.albatroz}><a href="/">ALBATROZ</a></h2>
       <Container maxWidth="lg">
-        <Header />
+        <HeaderContainer />
         {children}
       </Container>
     </div>
