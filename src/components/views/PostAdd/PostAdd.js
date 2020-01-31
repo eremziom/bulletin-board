@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import db from '../../../db.js';
+import { giveDate } from '../../utils/date';
 
 import styles from './PostAdd.module.scss';
 
@@ -17,6 +17,7 @@ class Component extends React.Component {
   constructor( props ){
     super( props );
     this.handleChange = this.handleChange.bind(this);
+    const giveDate = this.giveDate;
   }
 
   state = {
@@ -29,22 +30,6 @@ class Component extends React.Component {
       [name]: event.target.value,
     });
   };
-
-  giveDate() {
-    const newDate = new Date();
-    const date = newDate.toLocaleDateString('PL', { // you can skip the first argument
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    });
-    const time = newDate.toLocaleTimeString('PL', {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      timeZoneName: 'short',
-    });
-    return `${date} ${time}`;
-  }
 
   render(){
     return (
@@ -118,7 +103,7 @@ class Component extends React.Component {
               label="Publish Date"
               type="text"
               variant="filled"
-              defaultValue={this.giveDate()}
+              defaultValue={giveDate()}
             />
             <TextField disabled
               className={styles.inputs}
