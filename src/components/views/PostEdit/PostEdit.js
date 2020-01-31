@@ -11,8 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-
 
 //import {connect} from 'react-redux';
 //import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
@@ -21,7 +19,6 @@ class Component extends React.Component {
   constructor( props ){
     super( props );
     this.handleChange = this.handleChange.bind(this);
-    const giveDate = this.giveDate;
   }
 
   state = {

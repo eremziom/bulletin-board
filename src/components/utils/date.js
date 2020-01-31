@@ -1,4 +1,4 @@
-export function giveDate() {
+export const giveDate = () => {
   const newDate = new Date();
   const date = newDate.toLocaleDateString('PL', { // you can skip the first argument
     year: 'numeric',
@@ -12,4 +12,4 @@ export function giveDate() {
     timeZoneName: 'short',
   });
   return `${date} ${time}`;
-}
+};
