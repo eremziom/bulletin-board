@@ -12,10 +12,10 @@ import Typography from '@material-ui/core/Typography';
 
 import styles from './Homepage.module.scss';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {getAll, getLoadingState} from '../../../redux/postsRedux.js';
 
-const Component = () => {
+const Component = ({posts}) => {
   return (
     <div className={clsx(styles.welcome, styles.root)}>
       <h3 className={styles.welcome}>Welcome to ALBATROZ </h3>
@@ -38,7 +38,7 @@ const Component = () => {
             </CardContent>
           </CardActionArea>
         </Card>
-        {db.notes.map((note) =>
+        {posts ? posts.map((note) =>
           <Card key={note.id} className={styles.card}>
             <CardActionArea href={`/post/${note.id}`} className={styles.cardAction}>
               <CardMedia
@@ -62,7 +62,7 @@ const Component = () => {
               </CardContent>
             </CardActionArea>
           </Card>
-        )}
+        ) : ''}
       </div>
     </div>
   );
@@ -71,20 +71,21 @@ const Component = () => {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  posts: PropTypes.array,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  posts: getAll(state),
+});
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg),)
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, /*mapDispatchToProps*/)(Component);
 
 export {
   Component as Homepage,
-  //Container as Homepage,
+  Container as HomepageContainer,
   Component as HomepageComponent,
 };

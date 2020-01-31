@@ -1,9 +1,12 @@
+import db from '../db';
+
 export const initialState = {
   posts: {
-    data: {},
+    data: db.notes,
     loading: {
       active: false,
       error: false,
     },
   },
+  log: {},
 };
