@@ -15,8 +15,8 @@ import Button from '@material-ui/core/Button';
 
 import styles from './MyPosts.module.scss';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {getLogStatus, getUser} from '../../../redux/loginRedux';
 
 const Component = ({className, children}) => {
   return (
@@ -59,18 +59,18 @@ Component.propTypes = {
   className: PropTypes.string,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg),)
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, /*mapDispatchToProps*/)(Component);
 
 export {
   Component as MyPosts,
-  //Container as MyPosts,
+  Container as MyPostsContainer,
   Component as MyPostsComponent,
 };

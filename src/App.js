@@ -12,7 +12,7 @@ import { HomepageContainer } from './components/views/Homepage/Homepage';
 import { Post } from './components/views/Post/Post';
 import { PostEdit } from './components/views/PostEdit/PostEdit';
 import { PostAdd } from './components/views/PostAdd/PostAdd';
-import { MyPosts } from './components/views/MyPosts/MyPosts';
+import { MyPostsContainer } from './components/views/MyPosts/MyPosts';
 import { NotFound } from './components/views/NotFound/NotFound';
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
               <Route exact path='/post/add' component={PostAdd} />
               <Route exact path='/post/:id' component={Post} />
               <Route exact path='/post/:id/edit' component={PostEdit} />
-              <Route exact path='/myPosts' component={MyPosts} />
+              <Route exact path='/myPosts' component={MyPostsContainer} />
               <Route path='*' component={NotFound} />
             </Switch>
           </MainLayout>

@@ -10,6 +10,10 @@ export const initialState = {
   },
   login: {
     logged: false,
-    user: '',
+    user: {
+      admin: false,
+      name: 'Jan',
+      email: 'jan@example.com',
+    },
   },
 };

@@ -12,30 +12,32 @@ import styles from './Homepage.module.scss';
 
 import {connect} from 'react-redux';
 import {getAll, getLoadingState} from '../../../redux/postsRedux.js';
+import {getLogStatus} from '../../../redux/loginRedux.js';
 
-const Component = ({posts}) => {
+const Component = ({posts, login}) => {
   return (
     <div className={clsx(styles.welcome, styles.root)}>
       <h3 className={styles.welcome}>Welcome to ALBATROZ </h3>
       <p>Check out latest notes, or log in to add your own note!</p>
       <div className={styles.cards}>
-        <Card className={styles.card}>
-          <CardActionArea href={`/post/add`} className={styles.cardAction}>
-            <CardMedia
-              className={styles.photo}
-              image='https://images.pexels.com/photos/158771/notebook-pen-table-blank-158771.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
-              title='Add your note!'
-            />
-            <CardContent>
-              <Typography gutterBottom variant="inherit" component="h2">
-                Add your note!
-              </Typography>
-              <Typography variant="inherit" component="p">
-                <span className={styles.plus}>+</span>
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+        {login ?
+          <Card className={styles.card}>
+            <CardActionArea href={`/post/add`} className={styles.cardAction}>
+              <CardMedia
+                className={styles.photo}
+                image='https://images.pexels.com/photos/158771/notebook-pen-table-blank-158771.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
+                title='Add your note!'
+              />
+              <CardContent>
+                <Typography gutterBottom variant="inherit" component="h2">
+                  Add your note!
+                </Typography>
+                <Typography variant="inherit" component="p">
+                  <span className={styles.plus}>+</span>
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card> : null}
         {posts ? posts.map((note) =>
           <Card key={note.id} className={styles.card}>
             <CardActionArea href={`/post/${note.id}`} className={styles.cardAction}>
@@ -70,10 +72,12 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
+  login: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   posts: getAll(state),
+  login: getLogStatus(state),
 });
 
 // const mapDispatchToProps = dispatch => ({
