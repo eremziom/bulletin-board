@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 
@@ -23,7 +24,7 @@ class Component extends React.Component {
     else {
       return (
         <div className={styles.logged}>
-          <Button variant="contained" className={clsx(styles.Btn, styles.BtnBulletin)} href="/myPosts">
+          <Button component={Link} variant="contained" className={clsx(styles.Btn, styles.BtnBulletin)} exact to={`${process.env.PUBLIC_URL}/myPosts`}>
             My Bulletins
           </Button>
           <p className={styles.welcome}>Welcome {user.name}</p>
@@ -53,7 +54,7 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   loginSwitch: PropTypes.func,
-  login: PropTypes.object,
+  login: PropTypes.bool,
   user: PropTypes.object,
 };
 

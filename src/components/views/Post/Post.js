@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import db from '../../../db.js';
+import { Link } from 'react-router-dom';
 
 import styles from './Post.module.scss';
 
@@ -12,8 +12,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {getLogStatus, getUser} from '../../../redux/loginRedux';
+import {getAll} from '../../../redux/postsRedux';
 
 class Component extends React.Component {
 
@@ -25,18 +26,21 @@ class Component extends React.Component {
       postId = this.props.match.params.id;
     return postId;
   }
-  getPost(postId) {
+  getPost(postId, posts) {
     let showPost = '';
-    for(let post of db.notes){
-      if(post.id === Number(postId)){
-        showPost = post;
+    if(posts){
+      posts.map( post => {
+        if(post.id === Number(postId)){
+          showPost = post;
+        }
+      });
+      if(!showPost) {
+        window.location.replace('/NotFound');
       }
-    }
-    if (!showPost) {
+    } else {
       window.location.replace('/NotFound');
-    } else{
-      return showPost;
     }
+    return showPost;
   }
 
   showContact() {
@@ -45,8 +49,9 @@ class Component extends React.Component {
   }
 
   render(){
+    const {login, user, posts} = this.props;
     const postID = this.getId();
-    const postData = this.getPost(postID);
+    const postData = this.getPost(postID, posts);
     return (
       <div className={styles.root}>
         <h2>Bulletin ID: {postID}</h2>
@@ -82,9 +87,14 @@ class Component extends React.Component {
             </Button>
             <Button size="small" color="primary" onClick={this.showContact}>
               contact info
-            </Button><Button size="small" color="secondary" href='/'>
+            </Button>
+            <Button component={Link} exact to={`${process.env.PUBLIC_URL}/`} size="small" color="secondary" href='/'>
               go back
             </Button>
+            {login && postData.author === user.name ?
+              <Button  component={Link} exact to={`${process.env.PUBLIC_URL}/post/${postData.id}/edit`} size="small" color="secondary" >
+                edit post
+              </Button> : null}
           </CardActions>
         </Card>
       </div>
@@ -96,20 +106,25 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   match: PropTypes.object,
+  login: PropTypes.bool,
+  user: PropTypes.object,
+  posts: PropTypes.array,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  login: getLogStatus(state),
+  user: getUser(state),
+  posts: getAll(state),
+});
 
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg),)
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, /*mapDispatchToProps*/)(Component);
 
 export {
   Component as Post,
-  //Container as Post,
+  Container as PostContainer,
   Component as PostComponent,
 };

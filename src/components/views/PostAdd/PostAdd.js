@@ -10,31 +10,74 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {addNewPost} from '../../../redux/postsRedux';
+import {getUser} from '../../../redux/loginRedux';
 
 class Component extends React.Component {
   constructor( props ){
     super( props );
-    this.handleChange = this.handleChange.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.submitClick = this.submitClick.bind(this);
   }
 
   state = {
-    status: '',
+    note: {
+      id: 1,
+      title: '',
+      content: '',
+      pubDate: '',
+      actDate: '',
+      email: '',
+      status: 'draft',
+      photo: '',
+      price: '',
+      phone: '',
+      local: '',
+      author: '',
+    },
   }
 
-  handleChange = name => event => {
+  updateTextField = ({target}) => {
+    const { note } = this.state;
+    const { value, name } = target;
+    this.setState({note: {...note, [name]: value}});
+  }
+
+  updateData = () => {
+    const { note } = this.state;
+    const date = document.getElementById('pubDate-input');
+    const author = document.getElementById('author-input');
+    this.setState({note: {...note, pubDate: date.value, author: author.value}});
+  }
+
+  statusChange = name => event => {
+    const { note } = this.state;
     this.setState({
       ...this.state,
-      [name]: event.target.value,
+      note: {...note, [name]: event.target.value,
+      },
     });
   };
 
+  async submitClick (event) {
+    event.preventDefault();
+
+    const {updateData} = this;
+    await updateData();
+
+    const { note } = this.state;
+    await this.props.addNewPost(note);
+  }
+
   render(){
+    const {user} = this.props;
+    const {note} = this.state;
+    const {updateTextField} = this;
     return (
       <div>
         <h2>Add your Bulletin here!</h2>
-        <form className={styles.form} noValidate autoComplete="off">
+        <form className={styles.form} noValidate autoComplete="off" onSubmit={this.submitClick}>
           <div>
             <TextField required
               className={styles.inputs}
@@ -42,6 +85,9 @@ class Component extends React.Component {
               label="Title"
               type="text"
               variant="filled"
+              value={note.title}
+              onChange={updateTextField}
+              name='title'
             />
             <TextField required
               className={styles.inputs}
@@ -51,6 +97,8 @@ class Component extends React.Component {
               rows="4"
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='content'
             />
             <TextField
               className={styles.inputs}
@@ -58,6 +106,8 @@ class Component extends React.Component {
               label="Photo address"
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='photo'
             />
             <TextField
               className={styles.inputs}
@@ -65,6 +115,17 @@ class Component extends React.Component {
               label="Localisation"
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='local'
+            />
+            <TextField
+              className={styles.inputs}
+              id="price-input"
+              label="Price"
+              type="text"
+              variant="filled"
+              onChange={updateTextField}
+              name='price'
             />
             <TextField required
               className={styles.inputs}
@@ -72,6 +133,9 @@ class Component extends React.Component {
               label="Email"
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='email'
+              defaultValue={user ? user.email : ''}
             />
             <TextField
               className={styles.inputs}
@@ -80,21 +144,23 @@ class Component extends React.Component {
               defaultValue="+48 "
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='phone'
             />
             <InputLabel className={clsx(styles.inputs, styles.short)} htmlFor="status-switch">Status</InputLabel>
             <Select
               className={clsx(styles.inputs, styles.short)}
               native
               value={this.state.status}
-              onChange={this.handleChange('status')}
+              onChange={this.statusChange('status')}
               inputProps={{
                 name: 'status',
                 id: 'status-switch',
               }}
             >
-              <option value={10}>Draft</option>
-              <option value={20}>Published</option>
-              <option value={30}>Closed</option>
+              <option value='draft'>Draft</option>
+              <option value='published'>Published</option>
+              <option value='closed'>Closed</option>
             </Select>
             <TextField disabled
               className={styles.inputs}
@@ -102,7 +168,8 @@ class Component extends React.Component {
               label="Publish Date"
               type="text"
               variant="filled"
-              defaultValue={giveDate()}
+              value={giveDate()}
+              name='pubDate'
             />
             <TextField disabled
               className={styles.inputs}
@@ -110,9 +177,10 @@ class Component extends React.Component {
               label="Author"
               type="text"
               variant="filled"
-              defaultValue="Currently logged"
+              value={user ? user.name : ''}
+              name='author'
             />
-            <Button variant="contained" className={styles.Btn} type="submit">
+            <Button variant="contained" className={styles.Btn} type='submit'>
               SUBMIT
             </Button>
           </div>
@@ -123,22 +191,22 @@ class Component extends React.Component {
 }
 
 Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+  addNewPost: PropTypes.func,
+  user: PropTypes.object,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  user: getUser(state),
+});
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg),)
-// });
+const mapDispatchToProps = dispatch => ({
+  addNewPost: payload => dispatch(addNewPost(payload)),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as PostAdd,
-  //Container as PostAdd,
+  Container as PostAddContainer,
   Component as PostAddComponent,
 };

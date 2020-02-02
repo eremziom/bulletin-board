@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
-
-import db from '../../../db.js';
+//import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,10 +16,11 @@ import styles from './MyPosts.module.scss';
 
 import {connect} from 'react-redux';
 import {getLogStatus, getUser} from '../../../redux/loginRedux';
+import {getAll} from '../../../redux/postsRedux';
 
-const Component = ({className, children}) => {
+const Component = ({user, login, posts}) => {
   return (
-    <div className={clsx(className, styles.root)}>
+    <div>
       <TableContainer component={Paper} className={styles.container}>
         <Table aria-label="simple table">
           <TableHead>
@@ -34,8 +34,8 @@ const Component = ({className, children}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {db.notes.map((note) =>
-              (note.author === 'Jan' ?
+            {posts ? posts.map((note) =>
+              (note.author === user.name && login ?
                 <TableRow key={note.id} hover>
                   <TableCell component="th" scope="row">
                     {note.title}
@@ -43,10 +43,10 @@ const Component = ({className, children}) => {
                   <TableCell align="right">{note.pubDate}</TableCell>
                   <TableCell align="right">{note.actDate}</TableCell>
                   <TableCell align="right">{note.status}</TableCell>
-                  <TableCell align="right"><Button href={`/post/${note.id}`}>View</Button></TableCell>
-                  <TableCell align="right"><Button href ={`/post/${note.id}/edit`}>Edit</Button></TableCell>
-                </TableRow> : null)
-            )}
+                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note.id}`}>View</Button></TableCell>
+                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note.id}/edit`}>Edit</Button></TableCell>
+                </TableRow> : null /*window.location.replace('/NotFound')*/)
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>
@@ -55,12 +55,15 @@ const Component = ({className, children}) => {
 };
 
 Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+  user: PropTypes.object,
+  login: PropTypes.object,
+  posts: PropTypes.array,
 };
 
 const mapStateToProps = state => ({
   user: getUser(state),
+  login: getLogStatus(state),
+  posts: getAll(state,),
 });
 
 // const mapDispatchToProps = dispatch => ({

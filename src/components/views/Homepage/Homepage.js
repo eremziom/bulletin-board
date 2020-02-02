@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -22,7 +23,7 @@ const Component = ({posts, login}) => {
       <div className={styles.cards}>
         {login ?
           <Card className={styles.card}>
-            <CardActionArea href={`/post/add`} className={styles.cardAction}>
+            <CardActionArea component={Link} exact to={`${process.env.PUBLIC_URL}/post/add`} className={styles.cardAction}>
               <CardMedia
                 className={styles.photo}
                 image='https://images.pexels.com/photos/158771/notebook-pen-table-blank-158771.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260'
@@ -40,7 +41,7 @@ const Component = ({posts, login}) => {
           </Card> : null}
         {posts ? posts.map((note) =>
           <Card key={note.id} className={styles.card}>
-            <CardActionArea href={`/post/${note.id}`} className={styles.cardAction}>
+            <CardActionArea component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note.id}`} className={styles.cardAction}>
               <CardMedia
                 className={styles.photo}
                 image={note.photo}
@@ -72,7 +73,7 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
-  login: PropTypes.object,
+  login: PropTypes.bool,
 };
 
 const mapStateToProps = state => ({
