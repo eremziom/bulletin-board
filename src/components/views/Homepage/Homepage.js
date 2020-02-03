@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import styles from './Homepage.module.scss';
 
 import {connect} from 'react-redux';
-import {getAll, getLoadingState} from '../../../redux/postsRedux.js';
+import {getAll} from '../../../redux/postsRedux.js';
 import {getLogStatus} from '../../../redux/loginRedux.js';
 
 const Component = ({posts, login}) => {

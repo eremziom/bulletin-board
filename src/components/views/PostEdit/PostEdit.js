@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { giveDate } from '../../utils/date';
 
-import db from '../../../db.js';
-
 import styles from './PostEdit.module.scss';
 
 import TextField from '@material-ui/core/TextField';
@@ -12,23 +10,61 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
-//import {connect} from 'react-redux';
-//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
+import {connect} from 'react-redux';
+import {getAll, editPost} from '../../../redux/postsRedux';
+import {getUser, getLogStatus} from '../../../redux/loginRedux';
 
 class Component extends React.Component {
   constructor( props ){
     super( props );
-    this.handleChange = this.handleChange.bind(this);
+    this.statusChange = this.statusChange.bind(this);
+    this.submitClick = this.submitClick.bind(this);
   }
 
   state = {
-    status: '',
+    note: {
+      id: '',
+      title: '',
+      content: '',
+      pubDate: '',
+      actDate: '',
+      email: '',
+      status: 'draft',
+      photo: '',
+      price: '',
+      phone: '',
+      local: '',
+      author: '',
+    },
   }
 
-  handleChange = name => event => {
+  componentDidMount = () => {
+    const {login} = this.props;
+    if(!login && this.props.history){
+      this.props.history.push('/NotFound');
+    }
+  }
+
+  updateData = () => {
+    const { note } = this.state;
+    //const { posts } = this.props;
+    const date = document.getElementById('actDate-input');
+    const author = document.getElementById('author-input');
+    this.setState({note: {...note, pubDate: date.value, author: author.value, id: Number(this.props.match.params.id)}});
+  }
+
+  updateTextField = ({target}) => {
+    const { note } = this.state;
+    const { value, name } = target;
+    this.setState({note: {...note, [name]: value}});
+  }
+
+  statusChange = name => event => {
+    const { note } = this.state;
     this.setState({
       ...this.state,
-      [name]: event.target.value,
+      note: {...note, [name]: event.target.value,
+      },
     });
   };
 
@@ -41,18 +77,33 @@ class Component extends React.Component {
     return postId;
   }
 
+  async submitClick (event) {
+    event.preventDefault();
+
+    const {updateData} = this;
+    await updateData();
+
+    const { note } = this.state;
+    await this.props.editPost(note);
+  }
+
   render(){
     const id = this.getId();
+    const {posts} = this.props;
+    const {updateTextField} = this;
     let editNote = '';
-    for(const note of db.notes){
-      if(note.id === Number(id))
-        editNote = note;
+
+    if(posts){
+      posts.map(note => {
+        if(note.id === Number(id))
+          editNote = note;
+      });
     }
 
     return (
       <div>
         <h2>Edit your note here</h2>
-        <form className={styles.form} noValidate autoComplete="off">
+        <form className={styles.form} noValidate autoComplete="off" onSubmit={this.submitClick}>
           <div>
             <TextField required
               className={styles.inputs}
@@ -61,6 +112,8 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={editNote.title}
+              onChange={updateTextField}
+              name='title'
             />
             <TextField required
               className={styles.inputs}
@@ -71,6 +124,8 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={editNote.content}
+              onChange={updateTextField}
+              name='content'
             />
             <TextField
               className={styles.inputs}
@@ -79,6 +134,8 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={editNote.photo}
+              onChange={updateTextField}
+              name='photo'
             />
             <TextField
               className={styles.inputs}
@@ -87,6 +144,8 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={editNote.local}
+              onChange={updateTextField}
+              name='local'
             />
             <TextField required
               className={styles.inputs}
@@ -95,6 +154,8 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={editNote.email}
+              onChange={updateTextField}
+              name='email'
             />
             <TextField
               className={styles.inputs}
@@ -103,13 +164,15 @@ class Component extends React.Component {
               defaultValue={editNote.phone}
               type="text"
               variant="filled"
+              onChange={updateTextField}
+              name='phone'
             />
             <InputLabel className={clsx(styles.inputs, styles.short)} htmlFor="status-switch">Status</InputLabel>
             <Select
               className={clsx(styles.inputs, styles.short)}
               native
               value={this.state.status}
-              onChange={this.handleChange('status')}
+              onChange={this.statusChange('status')}
               inputProps={{
                 name: 'status',
                 id: 'status-switch',
@@ -127,6 +190,7 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue={giveDate()}
+              name='actDate'
             />
             <TextField disabled
               className={styles.inputs}
@@ -135,6 +199,7 @@ class Component extends React.Component {
               type="text"
               variant="filled"
               defaultValue="Currently logged"
+              name='author'
             />
             <Button variant="contained" className={styles.Btn} type="submit">
               ACCEPT CHANGES
@@ -150,20 +215,28 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   match: PropTypes.object,
+  posts: PropTypes.array,
+  user: PropTypes.object,
+  login: PropTypes.bool,
+  editPost: PropTypes.func,
+  history: PropTypes.object,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  posts: getAll(state),
+  user: getUser(state),
+  login: getLogStatus(state),
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg),)
-// });
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const mapDispatchToProps = dispatch => ({
+  editPost: payload => dispatch(editPost(payload)),
+});
+
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as PostEdit,
-  //Container as PostEdit,
+  Container as PostEditContainer,
   Component as PostEditComponent,
 };

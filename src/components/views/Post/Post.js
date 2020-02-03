@@ -34,11 +34,9 @@ class Component extends React.Component {
           showPost = post;
         }
       });
-      if(!showPost) {
-        window.location.replace('/NotFound');
+      if(!showPost && this.props.history) {
+        this.props.history.push('/NotFound');
       }
-    } else {
-      window.location.replace('/NotFound');
     }
     return showPost;
   }
@@ -109,6 +107,7 @@ Component.propTypes = {
   login: PropTypes.bool,
   user: PropTypes.object,
   posts: PropTypes.array,
+  history: PropTypes.object,
 };
 
 const mapStateToProps = state => ({

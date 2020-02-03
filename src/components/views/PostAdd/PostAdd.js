@@ -11,8 +11,8 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
-import {addNewPost} from '../../../redux/postsRedux';
-import {getUser} from '../../../redux/loginRedux';
+import {addNewPost, getAll} from '../../../redux/postsRedux';
+import {getUser, getLogStatus} from '../../../redux/loginRedux';
 
 class Component extends React.Component {
   constructor( props ){
@@ -23,7 +23,7 @@ class Component extends React.Component {
 
   state = {
     note: {
-      id: 1,
+      id: '',
       title: '',
       content: '',
       pubDate: '',
@@ -38,6 +38,13 @@ class Component extends React.Component {
     },
   }
 
+  componentDidMount = () => {
+    const {login} = this.props;
+    if(!login && this.props.history){
+      this.props.history.push('/NotFound');
+    }
+  }
+
   updateTextField = ({target}) => {
     const { note } = this.state;
     const { value, name } = target;
@@ -46,9 +53,10 @@ class Component extends React.Component {
 
   updateData = () => {
     const { note } = this.state;
+    const { posts } = this.props;
     const date = document.getElementById('pubDate-input');
     const author = document.getElementById('author-input');
-    this.setState({note: {...note, pubDate: date.value, author: author.value}});
+    this.setState({note: {...note, pubDate: date.value, author: author.value, id: posts.length+1}});
   }
 
   statusChange = name => event => {
@@ -73,11 +81,11 @@ class Component extends React.Component {
   render(){
     const {user} = this.props;
     const {note} = this.state;
-    const {updateTextField} = this;
+    const {updateTextField, submitClick} = this;
     return (
       <div>
         <h2>Add your Bulletin here!</h2>
-        <form className={styles.form} noValidate autoComplete="off" onSubmit={this.submitClick}>
+        <form className={styles.form} noValidate autoComplete="off" onSubmit={submitClick}>
           <div>
             <TextField required
               className={styles.inputs}
@@ -193,10 +201,15 @@ class Component extends React.Component {
 Component.propTypes = {
   addNewPost: PropTypes.func,
   user: PropTypes.object,
+  posts: PropTypes.array,
+  login: PropTypes.bool,
+  history: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
   user: getUser(state),
+  login: getLogStatus(state),
+  posts: getAll(state),
 });
 
 const mapDispatchToProps = dispatch => ({

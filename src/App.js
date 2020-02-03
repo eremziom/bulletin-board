@@ -10,7 +10,7 @@ import store from './redux/store';
 import { MainLayout } from './components/layout/MainLayout/MainLayout';
 import { HomepageContainer } from './components/views/Homepage/Homepage';
 import { PostContainer } from './components/views/Post/Post';
-import { PostEdit } from './components/views/PostEdit/PostEdit';
+import { PostEditContainer } from './components/views/PostEdit/PostEdit';
 import { PostAddContainer } from './components/views/PostAdd/PostAdd';
 import { MyPostsContainer } from './components/views/MyPosts/MyPosts';
 import { NotFound } from './components/views/NotFound/NotFound';
@@ -26,7 +26,7 @@ const App = () => {
               <Route exact path='/' component={HomepageContainer} />
               <Route exact path='/post/add' component={PostAddContainer} />
               <Route exact path='/post/:id' component={PostContainer} />
-              <Route exact path='/post/:id/edit' component={PostEdit} />
+              <Route exact path='/post/:id/edit' component={PostEditContainer} />
               <Route exact path='/myPosts' component={MyPostsContainer} />
               <Route path='*' component={NotFound} />
             </Switch>
