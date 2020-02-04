@@ -1,4 +1,4 @@
-//import Axios from 'axios';
+import Axios from 'axios';
 
 /* selectors */
 export const getAll = ({posts}) => posts.data;
@@ -21,6 +21,22 @@ export const fetchSuccess = payload => ({ payload, type: FETCH_SUCCESS });
 export const fetchError = payload => ({ payload, type: FETCH_ERROR });
 export const addNewPost = payload => ({ payload, type: ADD_POST });
 export const editPost = payload => ({ payload, type: EDIT_POST });
+
+/* THUNK */
+export const loadNotesRequest = () => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .get('http://localhost:8000/api/posts')
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
 
 /* reducer */
 export default function reducer(statePart = [], action = {}) {

@@ -235,7 +235,7 @@ class Component extends React.Component {
               label="Author"
               type="text"
               variant="filled"
-              defaultValue={editNote.author}
+              defaultValue={user ? user.name : editNote.author}
               name='author'
             />
             <NewButton type={'submit'}>
