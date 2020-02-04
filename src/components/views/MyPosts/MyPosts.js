@@ -56,7 +56,7 @@ const Component = ({user, login, posts}) => {
 
 Component.propTypes = {
   user: PropTypes.object,
-  login: PropTypes.object,
+  login: PropTypes.bool,
   posts: PropTypes.array,
 };
 

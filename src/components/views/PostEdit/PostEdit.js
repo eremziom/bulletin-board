@@ -47,10 +47,35 @@ class Component extends React.Component {
 
   updateData = () => {
     const { note } = this.state;
+    const id = Number(this.props.match.params.id);
     //const { posts } = this.props;
-    const date = document.getElementById('actDate-input');
+    const editDate = document.getElementById('actDate-input');
+    const postDate = document.getElementById('pubDate-input');
     const author = document.getElementById('author-input');
-    this.setState({note: {...note, pubDate: date.value, author: author.value, id: Number(this.props.match.params.id)}});
+    this.setState({note: {...note, actDate: editDate.value, author: author.value,
+      id: id, pubDate: postDate.value,
+    }});
+  }
+
+  fillRest = (editNote) => {
+    const keyArr = {};
+    const { note } = this.state;
+    for(let item in note){
+      let keyName = item;
+      if(!note[item]){
+        keyArr[keyName] = editNote[keyName];
+      }
+    }
+    this.setState({ note: {
+      ...note,
+      title: (keyArr.title ? keyArr.title : note.title),
+      content: (keyArr.content ? keyArr.content : note.content),
+      photo: (keyArr.photo ? keyArr.photo : note.photo),
+      email: (keyArr.email ? keyArr.email : note.email),
+      phone: (keyArr.phone ? keyArr.phone : note.phone),
+      local: (keyArr.local ? keyArr.local : note.local),
+      price: (keyArr.price ? keyArr.price : note.price),
+    }});
   }
 
   updateTextField = ({target}) => {
@@ -73,29 +98,33 @@ class Component extends React.Component {
     if(!this.props.match){
       return 2;
     } else
-      postId = this.props.match.params.id;
+      postId = Number(this.props.match.params.id);
     return postId;
   }
 
-  async submitClick (event) {
+  async submitClick (event, editNote) {
     event.preventDefault();
 
     const {updateData} = this;
     await updateData();
+
+    const {fillRest} = this;
+    await fillRest(editNote);
 
     const { note } = this.state;
     await this.props.editPost(note);
   }
 
   render(){
+
     const id = this.getId();
-    const {posts} = this.props;
-    const {updateTextField} = this;
+    const {posts, user} = this.props;
+    const {updateTextField, submitClick} = this;
     let editNote = '';
 
     if(posts){
       posts.map(note => {
-        if(note.id === Number(id))
+        if(note.id === id)
           editNote = note;
       });
     }
@@ -103,7 +132,7 @@ class Component extends React.Component {
     return (
       <div>
         <h2>Edit your note here</h2>
-        <form className={styles.form} noValidate autoComplete="off" onSubmit={this.submitClick}>
+        <form className={styles.form} noValidate autoComplete="off" onSubmit={(event) => submitClick(event, editNote)}>
           <div>
             <TextField required
               className={styles.inputs}
@@ -194,11 +223,20 @@ class Component extends React.Component {
             />
             <TextField disabled
               className={styles.inputs}
+              id="pubDate-input"
+              label="Publish Date"
+              type="text"
+              variant="filled"
+              defaultValue={editNote.pubDate}
+              name='pubDate'
+            />
+            <TextField disabled
+              className={styles.inputs}
               id="author-input"
               label="Author"
               type="text"
               variant="filled"
-              defaultValue="Currently logged"
+              defaultValue={editNote.author}
               name='author'
             />
             <Button variant="contained" className={styles.Btn} type="submit">
