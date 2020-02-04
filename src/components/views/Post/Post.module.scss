@@ -26,7 +26,7 @@
 }
 
 .background {
-  background:linear-gradient(to right, white, lightsteelblue, white);
+  background:linear-gradient(to right, $whiteColor, $primaryColor, $whiteColor);
 }
 
 @media only screen and (max-width: 767px) {

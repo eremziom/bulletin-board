@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 //import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import NewHeader from '../../common/header/header';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,6 +22,7 @@ import {getAll} from '../../../redux/postsRedux';
 const Component = ({user, login, posts}) => {
   return (
     <div>
+      <NewHeader>YOUR BULLETIN</NewHeader>
       <TableContainer component={Paper} className={styles.container}>
         <Table aria-label="simple table">
           <TableHead>

@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { giveDate } from '../../utils/date';
+import NewButton from '../../common/button/button';
 
 import styles from './PostEdit.module.scss';
 
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
 import {getAll, editPost} from '../../../redux/postsRedux';
@@ -48,7 +48,6 @@ class Component extends React.Component {
   updateData = () => {
     const { note } = this.state;
     const id = Number(this.props.match.params.id);
-    //const { posts } = this.props;
     const editDate = document.getElementById('actDate-input');
     const postDate = document.getElementById('pubDate-input');
     const author = document.getElementById('author-input');
@@ -239,9 +238,9 @@ class Component extends React.Component {
               defaultValue={editNote.author}
               name='author'
             />
-            <Button variant="contained" className={styles.Btn} type="submit">
+            <NewButton type={'submit'}>
               ACCEPT CHANGES
-            </Button>
+            </NewButton>
           </div>
         </form>
       </div>

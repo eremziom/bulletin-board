@@ -5,28 +5,21 @@
 }
 
 .main {
-   color: white;
+   color: $whiteColor;
 }
 
 body {
-   background-color: black;
+  background-color: $backgroundColor;
 }
 
 .albatroz {
   font-family: $titleFont;
   font-size: 40px;
-  background-color: lightsteelblue;
+  background-color: $primaryColor;
   position: relative;
-  background: linear-gradient(to right, black, lightsteelblue, black);
+  background: linear-gradient(to right, $backgroundColor, $primaryColor, $backgroundColor);
   a {
     text-decoration: none;
     color: inherit;
   }
-}
-
-.bird {
-  position: absolute;
-  top: 8px;
-  margin: 0 20px;
-  width: 40px;
 }

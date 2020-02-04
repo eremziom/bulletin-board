@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { giveDate } from '../../utils/date';
+import NewButton from '../../common/button/button';
+import NewHeader from '../../common/header/header';
 
 import styles from './PostAdd.module.scss';
 
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
 
 import {connect} from 'react-redux';
 import {addNewPost, getAll} from '../../../redux/postsRedux';
@@ -84,7 +85,7 @@ class Component extends React.Component {
     const {updateTextField, submitClick} = this;
     return (
       <div>
-        <h2>Add your Bulletin here!</h2>
+        <NewHeader>ADD NEW NOTE HERE</NewHeader>
         <form className={styles.form} noValidate autoComplete="off" onSubmit={submitClick}>
           <div>
             <TextField required
@@ -188,9 +189,9 @@ class Component extends React.Component {
               value={user ? user.name : ''}
               name='author'
             />
-            <Button variant="contained" className={styles.Btn} type='submit'>
+            <NewButton type={'submit'}>
               SUBMIT
-            </Button>
+            </NewButton>
           </div>
         </form>
       </div>

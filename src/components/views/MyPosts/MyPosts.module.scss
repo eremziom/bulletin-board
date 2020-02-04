@@ -4,10 +4,6 @@
 
 // }
 
-.list {
-  color: red;
-}
-
 .container {
-  background:linear-gradient(to right, lightsteelblue, white, lightsteelblue);
+  background:linear-gradient(to right, $primaryColor, $whiteColor, $primaryColor);
 }
