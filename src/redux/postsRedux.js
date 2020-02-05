@@ -23,12 +23,27 @@ export const addNewPost = payload => ({ payload, type: ADD_POST });
 export const editPost = payload => ({ payload, type: EDIT_POST });
 
 /* THUNK */
-export const loadNotesRequest = () => {
+export const fetchAllPosts = () => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());
 
     Axios
       .get('http://localhost:8000/api/posts')
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
+export const fetchSinglePost = ( id ) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .get(`http://localhost:8000/api/posts/${id}`)
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })

@@ -12,6 +12,7 @@ const postSchema = new mongoose.Schema({
   phone: {type: String},
   local: {type: String},
   author: {type: String, required: true},
+  id: {type: Number},
 });
 
 module.exports = mongoose.model('Post', postSchema);

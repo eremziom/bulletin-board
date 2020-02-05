@@ -14,32 +14,42 @@ import Typography from '@material-ui/core/Typography';
 
 import {connect} from 'react-redux';
 import {getLogStatus, getUser} from '../../../redux/loginRedux';
-import {getAll} from '../../../redux/postsRedux';
+import {getAll, fetchSinglePost} from '../../../redux/postsRedux';
 
 class Component extends React.Component {
 
-  getId() {
-    let postId = '';
-    if(!this.props.match){
-      return 2;
-    } else
-      postId = this.props.match.params.id;
-    return postId;
-  }
-  getPost(postId, posts) {
-    let showPost = '';
-    if(posts){
-      posts.map( post => {
-        if(post.id === Number(postId)){
-          showPost = post;
-        }
-      });
-      if(!showPost && this.props.history) {
-        this.props.history.push('/NotFound');
-      }
+  async componentDidMount() {
+    const {fetchPost} = this.props;
+    if(this.props.match){
+      const id = this.props.match.params.id;
+      await fetchPost( id );
+    } else {
+      this.props.history.push('/NotFound');
     }
-    return showPost;
   }
+
+  // getId() {
+  //   let postId = '';
+  //   if(!this.props.match){
+  //     return 2;
+  //   } else
+  //     postId = this.props.match.params.id;
+  //   return postId;
+  // }
+  // async getPost(postId, posts) {
+  //   let showPost = '';
+  //   if(posts){
+  //     posts.map( post => {
+  //       if(post._id === postId){
+  //         showPost = post;
+  //       }
+  //     });
+  //     if(!showPost && this.props.history) {
+  //       this.props.history.push('/NotFound');
+  //     }
+  //   }
+  //   return showPost;
+  // }
 
   showContact() {
     const contact = document.getElementById('contact');
@@ -47,12 +57,13 @@ class Component extends React.Component {
   }
 
   render(){
-    const {login, user, posts} = this.props;
-    const postID = this.getId();
-    const postData = this.getPost(postID, posts);
+    const {login, user, posts, fetchPost} = this.props;
+    //const postID = this.getId();
+    const postData = posts;
+    console.log(postData, posts);
     return (
       <div className={styles.root}>
-        <h2>Bulletin ID: {postID}</h2>
+        <h2>Bulletin ID: {postData._id}</h2>
         <Card>
           <CardMedia
             className={styles.photo}
@@ -108,6 +119,7 @@ Component.propTypes = {
   user: PropTypes.object,
   posts: PropTypes.array,
   history: PropTypes.object,
+  fetchPost: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -116,11 +128,11 @@ const mapStateToProps = state => ({
   posts: getAll(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg),)
-// });
+const mapDispatchToProps = dispatch => ({
+  fetchPost: ( id ) => dispatch(fetchSinglePost( id )),
+});
 
-const Container = connect(mapStateToProps, /*mapDispatchToProps*/)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as Post,
