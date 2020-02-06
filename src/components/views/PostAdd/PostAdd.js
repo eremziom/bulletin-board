@@ -12,7 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 
 import {connect} from 'react-redux';
-import {addNewPost, getAll} from '../../../redux/postsRedux';
+import {addNewPost, getAll, sendSinglePost} from '../../../redux/postsRedux';
 import {getUser, getLogStatus} from '../../../redux/loginRedux';
 
 class Component extends React.Component {
@@ -76,6 +76,9 @@ class Component extends React.Component {
     await updateData();
 
     const { note } = this.state;
+    const {sendPost} = this.props;
+    await sendPost(note);
+
     await this.props.addNewPost(note);
   }
 
@@ -205,6 +208,7 @@ Component.propTypes = {
   posts: PropTypes.array,
   login: PropTypes.bool,
   history: PropTypes.object,
+  sendPost: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -215,6 +219,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addNewPost: payload => dispatch(addNewPost(payload)),
+  sendPost: payload => dispatch(sendSinglePost(payload)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

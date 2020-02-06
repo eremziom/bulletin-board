@@ -56,6 +56,21 @@ export const fetchSinglePost = ( id ) => {
   };
 };
 
+export const sendSinglePost = (newNote) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .post('http://localhost:8000/api/posts', newNote)
+      .then(res => {
+        dispatch(fetchSuccess(newNote));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
 /* reducer */
 export default function reducer(statePart = [], action = {}) {
   switch (action.type) {

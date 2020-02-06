@@ -29,4 +29,23 @@ router.get('/posts/:id', async (req, res) => {
   }
 });
 
+router.post('/posts', async (req, res) => {
+  console.log('!!!!', req.body)
+  try {
+    const { title, content, photo, pubDate, email, phone, local,
+      status, price, author} = req.body;
+    console.log('!!!!', req.body)
+
+    const newPost = new Post({ title: title, content: content,
+      photo: photo, pubDate: pubDate, email: email, phone: phone,
+      local: local, status: status, price: price, author: author
+    })
+    await newPost.save();
+    res.json({ message: 'POST ADDED'});
+  }
+  catch(err) {
+    res.status(500).json(err)
+  }
+})
+
 module.exports = router
