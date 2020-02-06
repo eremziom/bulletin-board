@@ -36,7 +36,7 @@ const Component = ({user, login, posts}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {posts ? posts.map((note) =>
+            {posts && posts.length ? posts.map((note) =>
               (note.author === user.name && login ?
                 <TableRow key={note.id} hover>
                   <TableCell component="th" scope="row">

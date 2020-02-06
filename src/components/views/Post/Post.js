@@ -60,7 +60,6 @@ class Component extends React.Component {
     const {login, user, posts, fetchPost} = this.props;
     //const postID = this.getId();
     const postData = posts;
-    console.log(postData, posts);
     return (
       <div className={styles.root}>
         <h2>Bulletin ID: {postData._id}</h2>

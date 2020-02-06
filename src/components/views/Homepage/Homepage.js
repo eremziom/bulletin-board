@@ -47,7 +47,7 @@ class Component extends React.Component {
                 </CardContent>
               </CardActionArea>
             </Card> : null}
-          {posts ? posts.map((note) =>
+          {posts && posts.length ? posts.map((note) =>
             <Card key={note.id} className={styles.card}>
               <CardActionArea component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}`} className={styles.cardAction}>
                 <CardMedia
