@@ -57,7 +57,12 @@ class Component extends React.Component {
     const { posts } = this.props;
     const date = document.getElementById('pubDate-input');
     const author = document.getElementById('author-input');
-    this.setState({note: {...note, pubDate: date.value, author: author.value, id: posts.length+1}});
+    const email = document.getElementById('email-input');
+    if(!note.email){
+      this.setState({note: {...note, email: email.defaultValue, pubDate: date.value, author: author.value, id: posts.length+1}});
+    } else {
+      this.setState({note: {...note, pubDate: date.value, author: author.value, id: posts.length+1}});
+    }
   }
 
   statusChange = name => event => {

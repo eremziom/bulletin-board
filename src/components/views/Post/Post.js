@@ -14,9 +14,13 @@ import Typography from '@material-ui/core/Typography';
 
 import {connect} from 'react-redux';
 import {getLogStatus, getUser} from '../../../redux/loginRedux';
-import {getAll, fetchSinglePost} from '../../../redux/postsRedux';
+import {getAll, fetchSinglePost, delSinglePost} from '../../../redux/postsRedux';
 
 class Component extends React.Component {
+
+  state = {
+    deleted: false,
+  }
 
   async componentDidMount() {
     const {fetchPost} = this.props;
@@ -56,14 +60,33 @@ class Component extends React.Component {
     contact.classList.toggle(styles.hide);
   }
 
+  showDelete() {
+    const del = document.getElementById('delete');
+    del.classList.toggle(styles.hide);
+  }
+
+  async delPost() {
+    const {deletePost} = this.props;
+    if(this.props.match){
+      const id = this.props.match.params.id;
+      await deletePost( id );
+      const card = document.getElementById('card');
+      await card.classList.add(styles.hide);
+      this.setState ({ deleted: true });
+
+    } else {
+      this.props.history.push('/NotFound');
+    }
+  }
+
   render(){
-    const {login, user, posts, fetchPost} = this.props;
+    const {login, user, posts} = this.props;
     //const postID = this.getId();
     const postData = posts;
     return (
       <div className={styles.root}>
-        <h2>Bulletin ID: {postData._id}</h2>
-        <Card>
+        {!this.state.deleted ? <h2>Bulletin ID: {postData._id}</h2> : <h2>Post Deleted!</h2>}
+        <Card id='card'>
           <CardMedia
             className={styles.photo}
             image={postData.photo}
@@ -103,6 +126,17 @@ class Component extends React.Component {
               <Button  component={Link} exact to={`${process.env.PUBLIC_URL}/post/${postData.id}/edit`} size="small" color="secondary" >
                 edit post
               </Button> : null}
+            {login && postData.author === user.name ?
+              <Button size="small" color="secondary" onClick={this.showDelete}>
+                delete post
+              </Button> : null}
+            <Typography variant="inherit" component="h4" className={clsx(styles.hide, styles.delete)} id='delete'>
+              <div>Are you sure you want to erease this post? Earease is inreversable!</div>
+              {login && postData.author === user.name ?
+                <Button size="small" color="secondary" onClick={() => this.delPost()}>
+                  YES, delete post
+                </Button> : null}
+            </Typography>
           </CardActions>
         </Card>
       </div>
@@ -119,6 +153,7 @@ Component.propTypes = {
   posts: PropTypes.array,
   history: PropTypes.object,
   fetchPost: PropTypes.func,
+  deletePost: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -129,6 +164,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchPost: ( id ) => dispatch(fetchSinglePost( id )),
+  deletePost: ( id ) => dispatch(delSinglePost( id )),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
