@@ -32,7 +32,6 @@ export const fetchAllPosts = () => {
     Axios
       .get('http://localhost:8000/api/posts')
       .then(res => {
-        //if(!getState().posts.data)
         dispatch(fetchSuccess(res.data));
       })
       .catch(err => {
@@ -86,6 +85,21 @@ export const delSinglePost = (id) => {
   };
 };
 
+export const updateSinglePost = (id, editNote) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .put(`http://localhost:8000/api/posts/${id}`, editNote)
+      .then(res => {
+        dispatch(fetchSuccess(editNote));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
 /* reducer */
 export default function reducer(statePart = [], action = {}) {
   switch (action.type) {
@@ -98,18 +112,9 @@ export default function reducer(statePart = [], action = {}) {
       };
     }
     case EDIT_POST: {
-      const dataArr = statePart.data;
-      let item = [];
-      dataArr.map(note => {
-        if(note.id === action.payload.id){
-          item.push(action.payload);
-        } else {
-          item.push(note);
-        }
-      });
       return {
         ...statePart,
-        data: item,
+        data: action.payload,
       };
     }
     case FETCH_START: {

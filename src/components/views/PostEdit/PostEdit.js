@@ -11,7 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 
 import {connect} from 'react-redux';
-import {getAll, editPost} from '../../../redux/postsRedux';
+import {getAll, editPost, updateSinglePost} from '../../../redux/postsRedux';
 import {getUser, getLogStatus} from '../../../redux/loginRedux';
 
 class Component extends React.Component {
@@ -23,6 +23,7 @@ class Component extends React.Component {
 
   state = {
     note: {
+      _id: '',
       id: '',
       title: '',
       content: '',
@@ -74,6 +75,8 @@ class Component extends React.Component {
       phone: (keyArr.phone ? keyArr.phone : note.phone),
       local: (keyArr.local ? keyArr.local : note.local),
       price: (keyArr.price ? keyArr.price : note.price),
+      _id: (keyArr._id ? keyArr._id : ''),
+      id: (keyArr.id ? keyArr.id : ''),
     }});
   }
 
@@ -92,15 +95,6 @@ class Component extends React.Component {
     });
   };
 
-  getId() {
-    let postId = '';
-    if(!this.props.match){
-      return 2;
-    } else
-      postId = Number(this.props.match.params.id);
-    return postId;
-  }
-
   async submitClick (event, editNote) {
     event.preventDefault();
 
@@ -111,27 +105,21 @@ class Component extends React.Component {
     await fillRest(editNote);
 
     const { note } = this.state;
+    const { updatePost } = this.props;
+    const id = this.props.match.params.id;
+    await updatePost (id, note);
     await this.props.editPost(note);
   }
 
   render(){
-
-    const id = this.getId();
     const {posts, user} = this.props;
     const {updateTextField, submitClick} = this;
-    let editNote = '';
-
-    if(posts){
-      posts.map(note => {
-        if(note.id === id)
-          editNote = note;
-      });
-    }
+    const editNote = posts;
 
     return (
       <div>
         <h2>Edit your note here</h2>
-        <form className={styles.form} noValidate autoComplete="off" onSubmit={(event) => submitClick(event, editNote)}>
+        {editNote ? <form className={styles.form} noValidate autoComplete="off" onSubmit={(event) => submitClick(event, editNote)}>
           <div>
             <TextField required
               className={styles.inputs}
@@ -242,7 +230,7 @@ class Component extends React.Component {
               ACCEPT CHANGES
             </NewButton>
           </div>
-        </form>
+        </form> : ''}
       </div>
     );
   }
@@ -257,6 +245,7 @@ Component.propTypes = {
   login: PropTypes.bool,
   editPost: PropTypes.func,
   history: PropTypes.object,
+  updatePost: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
@@ -268,6 +257,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   editPost: payload => dispatch(editPost(payload)),
+  updatePost: (id, payload) => dispatch(updateSinglePost(id, payload)),
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

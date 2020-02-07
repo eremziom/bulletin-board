@@ -123,7 +123,7 @@ class Component extends React.Component {
               go back
             </Button>
             {login && postData.author === user.name ?
-              <Button  component={Link} exact to={`${process.env.PUBLIC_URL}/post/${postData.id}/edit`} size="small" color="secondary" >
+              <Button  component={Link} exact to={`${process.env.PUBLIC_URL}/post/${postData._id}/edit`} size="small" color="secondary" >
                 edit post
               </Button> : null}
             {login && postData.author === user.name ?

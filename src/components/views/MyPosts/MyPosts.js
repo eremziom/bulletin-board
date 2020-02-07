@@ -45,8 +45,8 @@ const Component = ({user, login, posts}) => {
                   <TableCell align="right">{note.pubDate}</TableCell>
                   <TableCell align="right">{note.actDate}</TableCell>
                   <TableCell align="right">{note.status}</TableCell>
-                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note.id}`}>View</Button></TableCell>
-                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note.id}/edit`}>Edit</Button></TableCell>
+                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}`}>View</Button></TableCell>
+                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}/edit`}>Edit</Button></TableCell>
                 </TableRow> : null /*window.location.replace('/NotFound')*/)
             ) : null}
           </TableBody>
