@@ -44,16 +44,24 @@ router.get('/posts/:id', async (req, res) => {
 
 router.post('/posts', async (req, res) => {
   try {
+
     const { title, content, photo, pubDate, email, phone, local,
       status, price, author, id, actDate} = req.body;
 
-    const newPost = new Post({ title: title, content: content,
-      photo: photo, pubDate: pubDate, email: email, phone: phone,
-      local: local, status: status, price: price, author: author,
-      id: id, actDate: actDate
-    })
-    await newPost.save();
-    res.json({ message: 'POST ADDED'});
+      const patternEmail = new RegExp(/([A-z]|[0-9]|\-|\_|\+|\.|\,)+@([A-z]|[0-9]|\-|\_|\+|\.|\,)+\.([A-z])+/, 'g');
+      const emailMatched = email.match(patternEmail).join('');
+
+    if(email && emailMatched.length >= email.length){
+      const newPost = new Post({ title: title, content: content,
+        photo: photo, pubDate: pubDate, email: email, phone: phone,
+        local: local, status: status, price: price, author: author,
+        id: id, actDate: actDate
+      })
+      await newPost.save();
+      res.json({ message: 'POST ADDED'});
+    } else {
+      res.json({message: 'wrong mail format'});
+    }
   }
   catch(err) {
     res.status(500).json(err)

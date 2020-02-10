@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  title: {type: String, required: true},
-  content: {type: String, required: true},
+  title: {type: String, required: true, minlength: 6, maxlength: 20},
+  content: {type: String, required: true, minlength: 10, maxlength: 200},
   pubDate: {type: String, required: true},
   actDate: {type: String},
   email: {type: String, required: true},
