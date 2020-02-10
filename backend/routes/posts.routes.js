@@ -17,6 +17,19 @@ router.get('/posts', async (req, res) => {
   }
 });
 
+router.get('/MyPosts/:name', async (req, res) => {
+  try {
+    const result = await Post
+    .find({ author: req.params.name})
+    .sort({pubDate: -1});
+    if(!result) res.status(404).json({ post: 'Not found...'});
+    else res.json(result);
+  }
+  catch(err) {
+    res.status(500).json(err);
+  }
+});
+
 router.get('/posts/:id', async (req, res) => {
   try {
     const result = await Post

@@ -40,6 +40,21 @@ export const fetchAllPosts = () => {
   };
 };
 
+export const fetchMyPosts = (userName) => {
+  return (dispatch, getState) => {
+    dispatch(fetchStarted());
+
+    Axios
+      .get(`http://localhost:8000/api/MyPosts/${userName}`)
+      .then(res => {
+        dispatch(fetchSuccess(res.data));
+      })
+      .catch(err => {
+        dispatch(fetchError(err.message || true));
+      });
+  };
+};
+
 export const fetchSinglePost = ( id ) => {
   return (dispatch, getState) => {
     dispatch(fetchStarted());

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { giveDate } from '../../utils/date';
+
 import NewButton from '../../common/button/button';
 import NewHeader from '../../common/header/header';
 
@@ -37,6 +38,7 @@ class Component extends React.Component {
       local: '',
       author: '',
     },
+    added: false,
   }
 
   componentDidMount = () => {
@@ -74,6 +76,10 @@ class Component extends React.Component {
     });
   };
 
+  pageReload = () => {
+    this.props.history.push('/');
+  }
+
   async submitClick (event) {
     event.preventDefault();
 
@@ -82,9 +88,12 @@ class Component extends React.Component {
 
     const { note } = this.state;
     const {sendPost} = this.props;
-    await sendPost(note);
+    const form = document.getElementById('form');
 
+    await sendPost(note);
     await this.props.addNewPost(note);
+    await form.classList.add(styles.hide);
+    setTimeout(this.pageReload, 1000);
   }
 
   render(){
@@ -93,8 +102,8 @@ class Component extends React.Component {
     const {updateTextField, submitClick} = this;
     return (
       <div>
-        <NewHeader>ADD NEW NOTE HERE</NewHeader>
-        <form className={styles.form} noValidate autoComplete="off" onSubmit={submitClick}>
+        {!this.state.added ? <NewHeader>ADD NEW NOTE HERE</NewHeader> : <NewHeader>POST ADDED</NewHeader>}
+        <form className={styles.form} noValidate autoComplete="off" onSubmit={submitClick} id='form'>
           <div>
             <TextField required
               className={styles.inputs}

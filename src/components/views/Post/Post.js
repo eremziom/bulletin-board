@@ -32,29 +32,6 @@ class Component extends React.Component {
     }
   }
 
-  // getId() {
-  //   let postId = '';
-  //   if(!this.props.match){
-  //     return 2;
-  //   } else
-  //     postId = this.props.match.params.id;
-  //   return postId;
-  // }
-  // async getPost(postId, posts) {
-  //   let showPost = '';
-  //   if(posts){
-  //     posts.map( post => {
-  //       if(post._id === postId){
-  //         showPost = post;
-  //       }
-  //     });
-  //     if(!showPost && this.props.history) {
-  //       this.props.history.push('/NotFound');
-  //     }
-  //   }
-  //   return showPost;
-  // }
-
   showContact() {
     const contact = document.getElementById('contact');
     contact.classList.toggle(styles.hide);
@@ -65,6 +42,10 @@ class Component extends React.Component {
     del.classList.toggle(styles.hide);
   }
 
+  reloadPage = () => {
+    this.props.history.push('/');
+  }
+
   async delPost() {
     const {deletePost} = this.props;
     if(this.props.match){
@@ -73,6 +54,7 @@ class Component extends React.Component {
       const card = document.getElementById('card');
       await card.classList.add(styles.hide);
       this.setState ({ deleted: true });
+      setTimeout(this.reloadPage, 1000);
 
     } else {
       this.props.history.push('/NotFound');
@@ -81,11 +63,10 @@ class Component extends React.Component {
 
   render(){
     const {login, user, posts} = this.props;
-    //const postID = this.getId();
     const postData = posts;
     return (
       <div className={styles.root}>
-        {!this.state.deleted ? <h2>Bulletin ID: {postData._id}</h2> : <h2>Post Deleted!</h2>}
+        {!this.state.deleted ? <h2>Post author: {postData.author}</h2> : <h2>Post Deleted!</h2>}
         <Card id='card'>
           <CardMedia
             className={styles.photo}

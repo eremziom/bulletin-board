@@ -17,49 +17,61 @@ import styles from './MyPosts.module.scss';
 
 import {connect} from 'react-redux';
 import {getLogStatus, getUser} from '../../../redux/loginRedux';
-import {getAll} from '../../../redux/postsRedux';
+import {getAll, fetchMyPosts} from '../../../redux/postsRedux';
 
-const Component = ({user, login, posts}) => {
-  return (
-    <div>
-      <NewHeader>YOUR BULLETIN</NewHeader>
-      <TableContainer component={Paper} className={styles.container}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>TITLE</TableCell>
-              <TableCell align="right">Publish Date</TableCell>
-              <TableCell align="right">Eddition Date</TableCell>
-              <TableCell align="right">Status</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {posts && posts.length ? posts.map((note) =>
-              (note.author === user.name && login ?
-                <TableRow key={note.id} hover>
-                  <TableCell component="th" scope="row">
-                    {note.title}
-                  </TableCell>
-                  <TableCell align="right">{note.pubDate}</TableCell>
-                  <TableCell align="right">{note.actDate}</TableCell>
-                  <TableCell align="right">{note.status}</TableCell>
-                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}`}>View</Button></TableCell>
-                  <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}/edit`}>Edit</Button></TableCell>
-                </TableRow> : null /*window.location.replace('/NotFound')*/)
-            ) : null}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  );
-};
+class Component extends React.Component {
+
+  async componentDidMount() {
+    const {getMyPosts, user} = this.props;
+    const userName = user.name;
+    console.log(userName);
+    await getMyPosts(userName);
+  }
+
+  render(){
+    const {user, login, posts} = this.props;
+    return (
+      <div>
+        <NewHeader>YOUR BULLETIN</NewHeader>
+        <TableContainer component={Paper} className={styles.container}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>TITLE</TableCell>
+                <TableCell align="right">Publish Date</TableCell>
+                <TableCell align="right">Eddition Date</TableCell>
+                <TableCell align="right">Status</TableCell>
+                <TableCell align="right"></TableCell>
+                {/* <TableCell align="right"></TableCell> */}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {posts && posts.length ? posts.map((note) =>
+                (note.author === user.name && login ?
+                  <TableRow key={note.id} hover>
+                    <TableCell component="th" scope="row">
+                      {note.title}
+                    </TableCell>
+                    <TableCell align="right">{note.pubDate}</TableCell>
+                    <TableCell align="right">{note.actDate}</TableCell>
+                    <TableCell align="right">{note.status}</TableCell>
+                    <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}`}>View</Button></TableCell>
+                    {/* <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}/edit`}>Edit</Button></TableCell> */}
+                  </TableRow> : null /*window.location.replace('/NotFound')*/)
+              ) : null}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    );
+  }
+}
 
 Component.propTypes = {
   user: PropTypes.object,
   login: PropTypes.bool,
   posts: PropTypes.array,
+  getMyPosts: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -68,11 +80,11 @@ const mapStateToProps = state => ({
   posts: getAll(state,),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg),)
-// });
+const mapDispatchToProps = dispatch => ({
+  getMyPosts: (userName) => dispatch(fetchMyPosts(userName)),
+});
 
-const Container = connect(mapStateToProps, /*mapDispatchToProps*/)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   Component as MyPosts,

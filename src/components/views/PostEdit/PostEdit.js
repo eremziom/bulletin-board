@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { giveDate } from '../../utils/date';
 import NewButton from '../../common/button/button';
+import NewHeader from '../../common/header/header';
 
 import styles from './PostEdit.module.scss';
 
@@ -37,9 +38,10 @@ class Component extends React.Component {
       local: '',
       author: '',
     },
+    edited: false,
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     const {login} = this.props;
     if(!login && this.props.history){
       this.props.history.push('/NotFound');
@@ -95,6 +97,10 @@ class Component extends React.Component {
     });
   };
 
+  reloadPage = (id) => {
+    this.props.history.push(`/post/${id}`);
+  }
+
   async submitClick (event, editNote) {
     event.preventDefault();
 
@@ -107,8 +113,12 @@ class Component extends React.Component {
     const { note } = this.state;
     const { updatePost } = this.props;
     const id = this.props.match.params.id;
+    const post = document.getElementById('post');
     await updatePost (id, note);
     await this.props.editPost(note);
+    await post.classList.add(styles.hide);
+    this.setState ({ edited: true });
+    setTimeout((id) => this.reloadPage(id), 1000);
   }
 
   render(){
@@ -118,9 +128,9 @@ class Component extends React.Component {
 
     return (
       <div>
-        <h2>Edit your note here</h2>
+        {!this.state.edited ? <NewHeader>Edit Your Post</NewHeader> : <NewHeader>Post Edited</NewHeader>}
         {editNote ? <form className={styles.form} noValidate autoComplete="off" onSubmit={(event) => submitClick(event, editNote)}>
-          <div>
+          <div id="post">
             <TextField required
               className={styles.inputs}
               id="title-input"
