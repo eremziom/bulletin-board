@@ -24,7 +24,6 @@ class Component extends React.Component {
   async componentDidMount() {
     const {getMyPosts, user} = this.props;
     const userName = user.name;
-    console.log(userName);
     await getMyPosts(userName);
   }
 
@@ -42,7 +41,6 @@ class Component extends React.Component {
                 <TableCell align="right">Eddition Date</TableCell>
                 <TableCell align="right">Status</TableCell>
                 <TableCell align="right"></TableCell>
-                {/* <TableCell align="right"></TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -56,8 +54,7 @@ class Component extends React.Component {
                     <TableCell align="right">{note.actDate}</TableCell>
                     <TableCell align="right">{note.status}</TableCell>
                     <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}`}>View</Button></TableCell>
-                    {/* <TableCell align="right"><Button component={Link} exact to={`${process.env.PUBLIC_URL}/post/${note._id}/edit`}>Edit</Button></TableCell> */}
-                  </TableRow> : null /*window.location.replace('/NotFound')*/)
+                  </TableRow> : null)
               ) : null}
             </TableBody>
           </Table>

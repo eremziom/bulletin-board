@@ -37,7 +37,7 @@ app.use('*', (req, res) => {
 mongoose.connect(`mongodb+srv://Erem:mongoDBhaslo@clustererem-2ilyb.mongodb.net/BulletinBoard`, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.once('open', () => {
-  console.log('Successfully connected to teh database');
+  console.log('Successfully connected to the database');
 });
 db.on('error', err => console.log('Error: ' + err));
 
