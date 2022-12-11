@@ -14,7 +14,7 @@
     "cors": "2.8.5",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "mongodb": "3.3.2",
     "mongoose": "5.7.1",
     "node-sass": "^4.13.1",
